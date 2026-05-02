@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #27272a #09090b;
+  }
+  ::selection {
+    background: #e8a04e;
+    color: #09090b;
+  }
+  body {
+    min-height: 100vh;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: #27272a;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e8a04e;
+    cursor: pointer;
+    border: 2px solid #09090b;
+    box-shadow: 0 0 0 3px rgba(232, 160, 78, 0.2);
+    transition: box-shadow 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 6px rgba(232, 160, 78, 0.3);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e8a04e;
+    cursor: pointer;
+    border: 2px solid #09090b;
+  }
+}
+
+@layer components {
+  .input-field {
+    @apply w-full bg-surface-3 border border-surface-4 rounded-lg px-4 py-3 text-zinc-100
+           placeholder-zinc-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30
+           transition-all duration-200;
+  }
+  .input-label {
+    @apply block text-sm font-medium text-zinc-300 mb-2;
+  }
+  .input-hint {
+    @apply text-xs text-zinc-500 mt-1.5;
+  }
+  .btn-primary {
+    @apply px-6 py-3 bg-accent text-surface-0 font-semibold rounded-lg
+           hover:bg-accent-light active:scale-[0.98] transition-all duration-200;
+  }
+  .btn-secondary {
+    @apply px-6 py-3 bg-surface-3 text-zinc-300 font-medium rounded-lg border border-surface-4
+           hover:bg-surface-4 hover:text-zinc-100 active:scale-[0.98] transition-all duration-200;
+  }
+  .card {
+    @apply bg-surface-1 border border-surface-4/50 rounded-xl p-6;
+  }
+  .section-title {
+    @apply font-display text-2xl text-zinc-50 mb-1;
+  }
+  .section-desc {
+    @apply text-sm text-zinc-400 mb-8 max-w-xl;
+  }
+  .option-card {
+    @apply bg-surface-2 border-2 border-surface-4 rounded-xl p-4 cursor-pointer
+           hover:border-zinc-500 transition-all duration-200 text-left;
+  }
+  .option-card.selected {
+    @apply border-accent bg-surface-3;
+  }
+  .tag {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-surface-3 border border-surface-4
+           rounded-full text-xs font-medium text-zinc-300;
+  }
+}
+
+/* Fade in animation for steps */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.step-enter {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Horizontal scroll for image previews */
+.image-scroll {
+  @apply flex gap-4 overflow-x-auto pb-4;
+  scroll-snap-type: x mandatory;
+}
+.image-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
