@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getClient, saveClient } from '../store'
+import AIAutofillModal from './AIAutofillModal'
 import Step1Business from '../steps/Step1Business'
 import Step2Customer from '../steps/Step2Customer'
 import Step3Visual from '../steps/Step3Visual'
@@ -39,6 +40,7 @@ const STEPS = [
 export default function Wizard({ clientId, onBack }) {
   const [client, setClient] = useState(null)
   const [currentStep, setCurrentStep] = useState(0)
+  const [showAutofill, setShowAutofill] = useState(false)
   const saveTimer = useRef(null)
   const contentRef = useRef(null)
 
@@ -91,6 +93,14 @@ export default function Wizard({ clientId, onBack }) {
     if (currentStep > 0) goToStep(currentStep - 1)
   }
 
+  const applyAutofill = (updatedBrief) => {
+    setClient(prev => {
+      const updated = { ...prev, brief: updatedBrief }
+      saveClient(updated)
+      return updated
+    })
+  }
+
   if (!client) return null
 
   const StepComponent = STEPS[currentStep].component
@@ -113,8 +123,17 @@ export default function Wizard({ clientId, onBack }) {
               {client.clientName}
             </h1>
           </div>
-          <div className="text-xs text-zinc-600 font-mono">
-            {currentStep + 1} / {STEPS.length}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowAutofill(true)}
+              className="text-xs font-medium px-2.5 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-colors"
+              title="Auto-fill brief fields with OpenAI"
+            >
+              ✨ AI Autofill
+            </button>
+            <div className="text-xs text-zinc-600 font-mono">
+              {currentStep + 1} / {STEPS.length}
+            </div>
           </div>
         </div>
 
@@ -184,6 +203,14 @@ export default function Wizard({ clientId, onBack }) {
           </div>
         </div>
       </main>
+
+      {showAutofill && (
+        <AIAutofillModal
+          brief={client.brief}
+          onClose={() => setShowAutofill(false)}
+          onApply={applyAutofill}
+        />
+      )}
     </div>
   )
 }
