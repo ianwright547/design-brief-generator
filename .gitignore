@@ -11,3 +11,9 @@ build/
 
 # Local Netlify folder
 .netlify
+
+# Local tooling
+.claude/
+CLAUDE.md
+NOTES.md
+DESIGN-PROMPT.md
